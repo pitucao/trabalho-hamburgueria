@@ -1,0 +1,16 @@
+body{
+    background-color: #c25959;
+    color: #888888;
+    font-family: 'Arial', sans-serif;
+}
+.container_principal{
+      display: flex;
+        justify-content: left;
+        align-items: center;      
+
+}
+.login{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

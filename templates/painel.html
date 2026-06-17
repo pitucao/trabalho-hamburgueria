@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel da Hamburgueria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login com Sucesso!</h1>
+        <p>Bem-vindo à área interna do sistema.</p>
+        <div class="signup-link">
+            <a href="{{ url_for('login') }}">Sair do Sistema</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+
+.checkout-container {
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+
+.subtitulo-cardapio {
+    text-align: center;
+    color: #666666;
+    margin-bottom: 20px;
+}
+
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto; /* Impede que a caixa ocupe a largura inteira */
+    margin-bottom: 0;
+    margin-right: 15px;
+    transform: scale(1.2); /* Deixa o quadrado do clique maior */
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333333;
+}
+
+/* Seção do Campo de Endereço */
+.campo-endereco {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.campo-endereco label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333333;
+    font-size: 14px;
+}
+
+.campo-endereco input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Evita que o campo quebre as bordas do container */
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.campo-endereco input[type="text"]:focus {
+    border-color: #007bff; /* Destaca em azul ao clicar */
+    outline: none;
+}
+
+/* Botão Azul de Confirmação (Estilo igual ao de Login) */
+.btn-confirmar {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.btn-confirmar:hover {
+    background-color: #0056b3; /* Tom de azul mais escuro no efeito hover */
+}
+
+/* Caixa de Resumo do Pedido (Bloco Verde) */
+.resumo-pedido {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #e2f0d9;
+    border: 1px solid #b5d99c;
+    border-radius: 6px;
+    color: #385723;
+    text-align: left;
+}
+
+.resumo-pedido h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.resumo-pedido ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.resumo-pedido li {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.resumo-pedido hr {
+    border: 0;
+    border-top: 1px solid #b5d99c;
+    margin: 15px 0;
+}
+
+.resumo-pedido p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Link de Sair do Sistema */
+.link-sair {
+    margin-top: 20px;
+    text-align: center;
+}

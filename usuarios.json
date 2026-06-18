@@ -1,4 +1,10 @@
 {
-    "victor": "victor",
-    "pitucao": "1"
+    "victor": {
+        "senha": "1",
+        "role": "cliente"
+    },
+    "chefe": {
+        "senha": "1",
+        "role": "admin"
+    }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Chefe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+</head>
+<body>
+    <div class="login-container checkout-container">
+        <h1>Painel do Chefe 👨‍🍳</h1>
+        <p class="subtitulo-cardapio">Gerenciamento de Ingredientes</p>
+        
+        <form action="/chefe" method="POST" style="margin-bottom: 25px;">
+            <div class="campo-endereco">
+                <label for="chave_ingrediente">Identificador (Ex: bacon, picles):</label>
+                <input type="text" id="chave_ingrediente" name="chave_ingrediente" placeholder="Termo simples sem espaços" required>
+            </div>
+            
+            <div class="campo-endereco" style="margin-top: 15px;">
+                <label for="nome_ingrediente">Nome no Cardápio (Ex: Bacon em Cubos):</label>
+                <input type="text" id="nome_ingrediente" name="nome_ingrediente" placeholder="Como o cliente vai ler" required>
+            </div>
+            
+            <button type="submit" class="btn-confirmar" style="background-color: #28a745;">
+                ➕ Adicionar ao Cardápio
+            </button>
+        </form>
+
+        <div class="resumo-pedido" style="background-color: #f8f9fa; border-color: #ddd; color: #333;">
+            <h3>Ingredientes Ativos:</h3>
+            <ul>
+                {% for chave, nome in ingredientes.items() %}
+                    <li>🔹 <strong>{{ chave }}:</strong> {{ nome }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="signup-link link-sair">
+            <a href="{{ url_for('login') }}">Sair do Painel</a>
+        </div>
+    </div>
+</body>
+</html>

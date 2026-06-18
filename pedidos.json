@@ -1,0 +1,33 @@
+[
+    {
+        "cliente": "victor",
+        "data_hora": "18/06/2026 02:22:10",
+        "ingredientes": [
+            "Pão de Brioche",
+            "Blend Bovino 150g"
+        ],
+        "endereco": "Rua das Flores, 123"
+    },
+    {
+        "cliente": "victor",
+        "data_hora": "18/06/2026 02:21:54",
+        "ingredientes": [
+            "Pão de Brioche",
+            "Blend Bovino 150g",
+            "Queijo Prato Derretido",
+            "Alface, tomate e cebola"
+        ],
+        "endereco": "1"
+    },
+    {
+        "cliente": "victor",
+        "data_hora": "18/06/2026 02:24:18",
+        "ingredientes": [
+            "Pão de Brioche",
+            "Blend Bovino 150g",
+            "Queijo Prato Derretido",
+            "Alface, tomate e cebola"
+        ],
+        "endereco": "1"
+    }
+]

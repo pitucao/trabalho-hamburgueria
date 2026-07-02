@@ -1,249 +1,170 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #bebebe;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px 0;
-    box-sizing: border-box;
+import json
+import os
+import datetime
+from flask import Flask, render_template, request, redirect, url_for, session
+
+app = Flask(__name__)
+app.secret_key = 'chave_secreta_hamburgueria_123'
+
+ARQUIVO_USUARIOS = 'usuarios.json'
+ARQUIVO_PEDIDOS = 'pedidos.json'
+
+# Banco de dados de ingredientes estruturado corretamente com dicionários internos
+ingredientes_banco = {
+    'pao_brioche': {'nome': 'Pão de Brioche', 'preco': 4.50},
+    'pao_australiano': {'nome': 'Pão Australiano', 'preco': 5.00},
+    'carne_bovina': {'nome': 'Blend Bovino 150g', 'preco': 12.00},
+    'carne_frango': {'nome': 'Filé de Frango Grelhado', 'preco': 9.50},
+    'queijo_prato': {'nome': 'Queijo Prato Derretido', 'preco': 3.50},
+    'queijo_cheddar': {'nome': 'Cheddar Cremoso', 'preco': 5.00},
+    'salada': {'nome': 'Alface, Tomate e Cebola', 'preco': 2.00},
+    'bacon': {'nome': 'Bacon Crispy', 'preco': 4.50},
+    'picles': {'nome': 'Picles Artesanal', 'preco': 2.50}
 }
 
-.checkout-container {
-    background-color: #fffcfc;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 480px;
-    box-sizing: border-box;
-}
+def carregar_usuarios():
+    if not os.path.exists(ARQUIVO_USUARIOS):
+        with open(ARQUIVO_USUARIOS, 'w', encoding='utf-8') as f:
+            json.dump({}, f)
+        return {}
+    try:
+        with open(ARQUIVO_USUARIOS, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return {}
 
-h1 {
-    text-align: center;
-    color: #333333;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
+def salvar_usuarios(usuarios):
+    with open(ARQUIVO_USUARIOS, 'w', encoding='utf-8') as f:
+        json.dump(usuarios, f, indent=4, ensure_ascii=False)
 
-.banner-hamburguer {
-    text-align: center;
-    margin-bottom: 20px;
-}
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        usuario = request.form.get('username')
+        senha = request.form.get('password')
+        usuarios_cadastrados = carregar_usuarios()
+        
+        if usuario in usuarios_cadastrados:
+            dados_usuario = usuarios_cadastrados[usuario]
+            if isinstance(dados_usuario, str):
+                senha_correta = (dados_usuario == str(senha))
+                eh_admin = False
+            else:
+                senha_correta = (dados_usuario['senha'] == str(senha))
+                eh_admin = (dados_usuario.get('role') == 'admin')
+            
+            if senha_correta:
+                session['usuario_logado'] = usuario
+                if eh_admin:
+                    return redirect(url_for('painel_chefe'))
+                return redirect(url_for('cardapio'))
+                
+        return "Usuário ou senha incorretos. Tente novamente."
+    return render_template('index.html')
 
-.banner-hamburguer img {
-    width: 100%;
-    max-width: 320px;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+@app.route('/registrar', methods=['GET', 'POST'])
+def registrar():
+    if request.method == 'POST':
+        usuario = request.form.get('username').strip()
+        senha = request.form.get('password')
+        if not usuario or not senha:
+            return "Preencha todos os campos."
+            
+        usuarios_cadastrados = carregar_usuarios()
+        if usuario in usuarios_cadastrados:
+            return "Este nome de usuário já está cadastrado."
+            
+        usuarios_cadastrados[usuario] = {"senha": str(senha), "role": "cliente"}
+        salvar_usuarios(usuarios_cadastrados)
+        return redirect(url_for('login'))
+    return render_template('registrar.html')
 
-.menu-centralizado {
-    width: 100%;
-    margin-bottom: 15px;
-}
+@app.route('/cardapio', methods=['GET', 'POST'])
+def cardapio():
+    global ingredientes_banco
+    if 'usuario_logado' not in session:
+        return redirect(url_for('login'))
+        
+    cliente_atual = session['usuario_logado']
+    
+    if request.method == 'POST':
+        endereco_entrega = request.form.get('endereco')
+        forma_pagamento = request.form.get('pagamento')
+        pao_escolhido = request.form.get('pao_selecionado')
+        
+        hamburguer_customizado = []
+        valor_total = 0.0
+        
+        if pao_escolhido in ingredientes_banco:
+            hamburguer_customizado.append(ingredientes_banco[pao_escolhido]['nome'])
+            valor_total += ingredientes_banco[pao_escolhido]['preco']
+        
+        for chave, dados in ingredientes_banco.items():
+            if chave != 'pao_brioche' and chave != 'pao_australiano':
+                if request.form.get(chave):
+                    hamburguer_customizado.append(dados['nome'])
+                    valor_total += dados['preco']
+        
+        if not hamburguer_customizado:
+            return render_template('cardapio.html', ingredientes=ingredientes_banco, resumo=None, total=0.0, pagamento=None, endereco=None, erro="Selecione pelo menos um ingrediente.")
+            
+        novo_recibo = {
+            "cliente": cliente_atual,
+            "data_hora": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "ingredientes": hamburguer_customizado,
+            "total": round(valor_total, 2),
+            "forma_pagamento": forma_pagamento,
+            "endereco": endereco_entrega
+        }
+        
+        pedidos_existentes = []
+        if os.path.exists(ARQUIVO_PEDIDOS):
+            try:
+                with open(ARQUIVO_PEDIDOS, 'r', encoding='utf-8') as f:
+                    pedidos_existentes = json.load(f)
+            except json.JSONDecodeError:
+                pedidos_existentes = []
+        
+        pedidos_existentes.append(novo_recibo)
+        with open(ARQUIVO_PEDIDOS, 'w', encoding='utf-8') as f:
+            json.dump(pedidos_existentes, f, indent=4, ensure_ascii=False)
+            
+        return render_template('cardapio.html', 
+                               ingredientes=ingredientes_banco, 
+                               resumo=hamburguer_customizado, 
+                               total=valor_total,
+                               pagamento=forma_pagamento,
+                               endereco=endereco_entrega,
+                               erro=None)
 
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #e9ecef;
-    box-sizing: border-box;
-}
+    return render_template('cardapio.html', ingredientes=ingredientes_banco, resumo=None, total=0.0, pagamento=None, endereco=None, erro=None)
 
-.checkbox-group input[type="checkbox"] {
-    width: auto;
-    margin: 0 15px 0 0;
-    transform: scale(1.2);
-    cursor: pointer;
-}
+@app.route('/chefe', methods=['GET', 'POST'])
+def painel_chefe():
+    global ingredientes_banco
+    if 'usuario_logado' not in session:
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST':
+        chave = request.form.get('chave_ingrediente').lower().strip().replace(" ", "_")
+        nome_completo = request.form.get('nome_ingrediente').strip()
+        preco = request.form.get('preco_ingrediente')
+        
+        if chave and nome_completo and preco:
+            try:
+                ingredientes_banco[chave] = {
+                    'nome': nome_completo,
+                    'preco': float(preco)
+                }
+            except ValueError:
+                return "Preço inválido. Use pontos para os centavos."
+            
+    return render_template('chefe.html', ingredientes=ingredientes_banco)
 
-.checkbox-group label {
-    display: flex !important;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    margin-bottom: 0;
-    color: #333333;
-    font-weight: 500;
-    cursor: pointer;
-}
+@app.route('/logout')
+def logout():
+    session.pop('usuario_logado', None)
+    return redirect(url_for('login'))
 
-.preco-item {
-    font-weight: bold;
-    color: #28a745;
-}
-
-.contador-total {
-    margin: 15px 0;
-    font-size: 16px;
-    color: #333333;
-    text-align: right;
-    background: #ffffff;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px dashed #bbbbbb;
-    box-sizing: border-box;
-}
-
-.campo-endereco {
-    margin-top: 15px;
-    text-align: left;
-}
-
-.campo-endereco label {
-    display: block;
-    margin-bottom: 5px;
-    color: #666666;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.campo-endereco input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-.campo-endereco input[type="text"]:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.secao-pagamento {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.titulo-pagamento {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #666666;
-    font-size: 14px;
-}
-
-.opcoes-pagamento {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f8f9fa;
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #e9ecef;
-    box-sizing: border-box;
-}
-
-.opcoes-pagamento label {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    color: #333333;
-    margin-bottom: 0;
-    font-weight: 500;
-}
-
-.opcoes-pagamento input[type="radio"] {
-    margin: 0;
-    cursor: pointer;
-}
-
-.btn-confirmar {
-    margin-top: 20px;
-    display: block;
-    width: 100%;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.2s;
-}
-
-.btn-confirmar:hover {
-    background-color: #0056b3;
-}
-
-.alerta-erro {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 12px;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.resumo-pedido {
-    margin-top: 25px;
-    padding: 15px;
-    background-color: #e2f0d9;
-    border: 1px solid #b5d99c;
-    border-radius: 6px;
-    color: #385723;
-    text-align: left;
-    box-sizing: border-box;
-}
-
-.resumo-pedido h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.resumo-pedido ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.resumo-pedido li {
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
-.resumo-pedido hr {
-    border: 0;
-    border-top: 1px solid #b5d99c;
-    margin: 15px 0;
-}
-
-.resumo-pedido p {
-    margin: 0 0 5px 0;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.resumo-pedido p:last-child {
-    margin-bottom: 0;
-}
-
-.signup-link {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #666666;
-}
-
-.signup-link a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.signup-link a:hover {
-    text-decoration: underline;
-}
+if __name__ == '__main__':
+    app.run(debug=True)

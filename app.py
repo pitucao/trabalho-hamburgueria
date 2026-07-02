@@ -4,12 +4,21 @@ import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+<<<<<<< HEAD
+=======
+
+# CHAVE SECRETA: Necessária para criptografar os dados da sessão
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
 app.secret_key = 'chave_secreta_hamburgueria_123'
 
 ARQUIVO_USUARIOS = 'usuarios.json'
 ARQUIVO_PEDIDOS = 'pedidos.json'
 
+<<<<<<< HEAD
 # Banco de dados de ingredientes estruturado corretamente com dicionários internos
+=======
+# Banco de dados de ingredientes dinâmicos (inicializado com os itens padrão)
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
 ingredientes_banco = {
     'pao_brioche': {'nome': 'Pão de Brioche', 'preco': 4.50},
     'pao_australiano': {'nome': 'Pão Australiano', 'preco': 5.00},
@@ -34,9 +43,16 @@ def carregar_usuarios():
         return {}
 
 def salvar_usuarios(usuarios):
+<<<<<<< HEAD
+=======
+    """Salva o dicionário de usuários no arquivo JSON."""
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
     with open(ARQUIVO_USUARIOS, 'w', encoding='utf-8') as f:
         json.dump(usuarios, f, indent=4, ensure_ascii=False)
 
+# ==========================================
+# ROTA DE LOGIN
+# ==========================================
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -62,26 +78,60 @@ def login():
         return "Usuário ou senha incorretos. Tente novamente."
     return render_template('index.html')
 
+<<<<<<< HEAD
+=======
+# ==========================================
+# ROTA DE CADASTRO (RESTAURADA)
+# ==========================================
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
 @app.route('/registrar', methods=['GET', 'POST'])
 def registrar():
     if request.method == 'POST':
         usuario = request.form.get('username').strip()
         senha = request.form.get('password')
+<<<<<<< HEAD
+=======
+        
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
         if not usuario or not senha:
             return "Preencha todos os campos."
             
         usuarios_cadastrados = carregar_usuarios()
+<<<<<<< HEAD
         if usuario in usuarios_cadastrados:
             return "Este nome de usuário já está cadastrado."
             
         usuarios_cadastrados[usuario] = {"senha": str(senha), "role": "cliente"}
         salvar_usuarios(usuarios_cadastrados)
         return redirect(url_for('login'))
+=======
+        
+        # Verificar duplicadas
+        if usuario in usuarios_cadastrados:
+            return "Este nome de usuário já está cadastrado."
+            
+        # usuario é cliente por padrão
+        usuarios_cadastrados[usuario] = {
+            "senha": str(senha),
+            "role": "cliente"
+        }
+        
+        salvar_usuarios(usuarios_cadastrados)
+        return redirect(url_for('login'))
+        
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
     return render_template('registrar.html')
 
+# ==========================================
+# ROTA DO CARDÁPIO / CHECKOUT (CLIENTE)
+# ==========================================
 @app.route('/cardapio', methods=['GET', 'POST'])
 def cardapio():
     global ingredientes_banco
+<<<<<<< HEAD
+=======
+    
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
     if 'usuario_logado' not in session:
         return redirect(url_for('login'))
         
@@ -137,8 +187,14 @@ def cardapio():
                                endereco=endereco_entrega,
                                erro=None)
 
+<<<<<<< HEAD
     return render_template('cardapio.html', ingredientes=ingredientes_banco, resumo=None, total=0.0, pagamento=None, endereco=None, erro=None)
 
+=======
+# ==========================================
+# ROTA PRIVILEGIADA (PAINEL DO CHEFE)
+# ==========================================
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
 @app.route('/chefe', methods=['GET', 'POST'])
 def painel_chefe():
     global ingredientes_banco
@@ -162,6 +218,12 @@ def painel_chefe():
             
     return render_template('chefe.html', ingredientes=ingredientes_banco)
 
+<<<<<<< HEAD
+=======
+# ==========================================
+# ROTA DE LOGOUT (SAIR)
+# ==========================================
+>>>>>>> a6ecbb610d8f3f88a1ef9deb6bce17be60f1bb38
 @app.route('/logout')
 def logout():
     session.pop('usuario_logado', None)

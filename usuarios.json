@@ -6,5 +6,9 @@
     "chefe": {
         "senha": "1",
         "role": "admin"
+    },
+    "pitucao": {
+        "senha": "1",
+        "role": "cliente"
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel do Chefe</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_chefe.css') }}">
 </head>
 <body>
     <div class="login-container checkout-container">
@@ -20,8 +20,13 @@
                 <label for="nome_ingrediente">Nome no Cardápio (Ex: Bacon em Cubos):</label>
                 <input type="text" id="nome_ingrediente" name="nome_ingrediente" placeholder="Como o cliente vai ler" required>
             </div>
+
+            <div class="campo-endereco" style="margin-top: 15px;">
+                <label for="preco_ingrediente">Preço do Ingrediente (Ex: 4.50):</label>
+                <input type="text" id="preco_ingrediente" name="preco_ingrediente" placeholder="Use ponto para os centavos" required>
+            </div>
             
-            <button type="submit" class="btn-confirmar" style="background-color: #28a745;">
+            <button type="submit" class="btn-confirmar" style="background-color: #28a745; margin-top: 20px;">
                 ➕ Adicionar ao Cardápio
             </button>
         </form>
@@ -29,14 +34,18 @@
         <div class="resumo-pedido" style="background-color: #f8f9fa; border-color: #ddd; color: #333;">
             <h3>Ingredientes Ativos:</h3>
             <ul>
-                {% for chave, nome in ingredientes.items() %}
-                    <li>🔹 <strong>{{ chave }}:</strong> {{ nome }}</li>
+                {% for chave, dados in ingredientes.items() %}
+                    {% if dados is mapping %}
+                        <li>🔹 <strong>{{ dados.nome }}:</strong> R$ {{ "%.2f"|format(dados.preco) }}</li>
+                    {% else %}
+                        <li>🔹 <strong>{{ chave }}:</strong> {{ dados }}</li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
 
         <div class="signup-link link-sair">
-            <a href="{{ url_for('login') }}">Sair do Painel</a>
+            <a href="{{ url_for('logout') }}">Sair do Painel</a>
         </div>
     </div>
 </body>

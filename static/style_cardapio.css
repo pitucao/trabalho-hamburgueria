@@ -1,0 +1,249 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #bebebe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.checkout-container {
+    background-color: #fffcfc;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.banner-hamburguer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.banner-hamburguer img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu-centralizado {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    box-sizing: border-box;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin: 0 15px 0 0;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    display: flex !important;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 0;
+    color: #333333;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.preco-item {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.contador-total {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #333333;
+    text-align: right;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px dashed #bbbbbb;
+    box-sizing: border-box;
+}
+
+.campo-endereco {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.campo-endereco label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666666;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.campo-endereco input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.campo-endereco input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.secao-pagamento {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.titulo-pagamento {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #666666;
+    font-size: 14px;
+}
+
+.opcoes-pagamento {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    box-sizing: border-box;
+}
+
+.opcoes-pagamento label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    color: #333333;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.opcoes-pagamento input[type="radio"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.btn-confirmar {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.btn-confirmar:hover {
+    background-color: #0056b3;
+}
+
+.alerta-erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.resumo-pedido {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #e2f0d9;
+    border: 1px solid #b5d99c;
+    border-radius: 6px;
+    color: #385723;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.resumo-pedido h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.resumo-pedido ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.resumo-pedido li {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.resumo-pedido hr {
+    border: 0;
+    border-top: 1px solid #b5d99c;
+    margin: 15px 0;
+}
+
+.resumo-pedido p {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.resumo-pedido p:last-child {
+    margin-bottom: 0;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}

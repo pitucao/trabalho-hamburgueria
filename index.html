@@ -3,85 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garopaba Burger - Cardápio Digital</title>
+    <title>Garopaba Burger - Cardápio e Pedidos</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- NAVBAr SUPERIOR OBRIGATÓRIA -->
     <header class="navbar">
         <div class="navbar-container">
-            <span class="logo">Garopaba Burger</span>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#inicio">Início</a></li>
-                    <li><a href="#cardapio">Cardápio</a></li>
-                    <li><a href="#pedido">Fazer Pedido</a></li>
-                </ul>
-            </nav>
+            <span class="logo">🍔 Garopaba Burger</span>
+            <ul class="nav-links">
+                <li><a href="#cardapio">Cardápio</a></li>
+                <li><a href="#fazer-pedido">Fazer Pedido</a></li>
+            </ul>
         </div>
     </header>
 
-    <!-- SEÇÃO 1: HERO / INÍCIO -->
-    <section id="inicio" class="hero-section">
+    <section class="hero-section">
         <div class="hero-content">
             <h1>O Melhor Hambúrguer de Garopaba</h1>
-            <p>Monte o seu pedido online com ingredientes frescos selecionados.</p>
-            <a href="#cardapio" class="btn-hero">Ver Cardápio</a>
+            <p>Escolha os melhores ingredientes e monte o seu burger perfeito.</p>
+            <a href="#fazer-pedido" class="btn-hero">Monte Seu Burger</a>
         </div>
     </section>
 
-    <!-- SEÇÃO 2: CARDÁPIO BASEADO EM CARDS (REQUISITO) -->
     <section id="cardapio" class="cardapio-section">
-        <h2>Nossos Ingredientes</h2>
+        <h2>Nossos Valores Básicos</h2>
         <div class="cards-container">
-            
-            <!-- Card 1 -->
             <div class="card-item">
                 <div class="card-corpo">
                     <h3>Pão de Brioche</h3>
                     <p class="card-preco">R$ 4.50</p>
                 </div>
             </div>
-
-            <!-- Card 2 -->
+            <div class="card-item">
+                <div class="card-corpo">
+                    <h3>Pão Australiano</h3>
+                    <p class="card-preco">R$ 5.00</p>
+                </div>
+            </div>
             <div class="card-item">
                 <div class="card-corpo">
                     <h3>Blend Bovino 150g</h3>
                     <p class="card-preco">R$ 12.00</p>
                 </div>
             </div>
-
-            <!-- Card 3 -->
             <div class="card-item">
                 <div class="card-corpo">
                     <h3>Cheddar Cremoso</h3>
                     <p class="card-preco">R$ 5.00</p>
                 </div>
             </div>
-
-            <!-- Card 4 -->
-            <div class="card-item">
-                <div class="card-corpo">
-                    <h3>Bacon Crispy</h3>
-                    <p class="card-preco">R$ 4.50</p>
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- SEÇÃO 3: FORMULÁRIO DE PEDIDO ONLINE -->
-    <section id="pedido" class="pedido-section">
+    <section id="fazer-pedido" class="pedido-section">
         <div class="form-container">
             <h2>Monte seu Pedido</h2>
             
-            <div id="alerta-erro" class="alerta-erro" style="display: none;"></div>
-            
             <form id="form-pedido">
-                <!-- Escolha do Pão (Radio - Escolha Única) -->
+                <div class="form-grupo">
+                    <label for="nome-cliente">Seu Nome:</label>
+                    <input type="text" id="nome-cliente" required placeholder="Digite seu nome completo">
+                </div>
+
                 <fieldset class="form-grupo">
-                    <legend>1. Escolha o Pão (Selecione 1):</legend>
+                    <legend>1. Escolha o Pão:</legend>
                     <div class="opcao-selecao">
                         <input type="radio" id="pao_brioche" name="pao_selecionado" value="Pão de Brioche" data-preco="4.50" checked>
                         <label for="pao_brioche">Pão de Brioche (+ R$ 4.50)</label>
@@ -92,7 +78,6 @@
                     </div>
                 </fieldset>
 
-                <!-- Escolha dos Ingredientes (Checkbox - Escolha Múltipla) -->
                 <fieldset class="form-grupo">
                     <legend>2. Adicione os Ingredientes:</legend>
                     <div class="opcao-selecao">
@@ -100,31 +85,20 @@
                         <label for="carne">Blend Bovino 150g (+ R$ 12.00)</label>
                     </div>
                     <div class="opcao-selecao">
-                        <input type="checkbox" id="queijo" name="ingrediente" value="Cheddar Cremoso" data-preco="5.00" checked>
-                        <label for="queijo">Cheddar Cremoso (+ R$ 5.00)</label>
+                        <input type="checkbox" id="cheddar" name="ingrediente" value="Cheddar" data-preco="5.00" checked>
+                        <label for="cheddar">Cheddar Cremoso (+ R$ 5.00)</label>
                     </div>
                     <div class="opcao-selecao">
-                        <input type="checkbox" id="bacon" name="ingrediente" value="Bacon Crispy" data-preco="4.50">
+                        <input type="checkbox" id="bacon" name="ingrediente" value="Bacon" data-preco="4.50">
                         <label for="bacon">Bacon Crispy (+ R$ 4.50)</label>
                     </div>
-                    <div class="opcao-selecao">
-                        <input type="checkbox" id="salada" name="ingrediente" value="Salada" data-preco="2.00">
-                        <label for="salada">Alface, Tomate e Cebola (+ R$ 2.00)</label>
-                    </div>
                 </fieldset>
-
-                <!-- Dados de Entrega -->
-                <div class="form-grupo">
-                    <label for="nome_cliente">Seu Nome:</label>
-                    <input type="text" id="nome_cliente" required placeholder="Digite seu nome completo">
-                </div>
 
                 <div class="form-grupo">
                     <label for="endereco">Endereço de Entrega:</label>
                     <input type="text" id="endereco" required placeholder="Rua, Número, Bairro">
                 </div>
 
-                <!-- Forma de Pagamento -->
                 <div class="form-grupo">
                     <label for="pagamento">Forma de Pagamento:</label>
                     <select id="pagamento" required>
@@ -134,24 +108,25 @@
                     </select>
                 </div>
 
-                <!-- Preço Total Dinâmico -->
                 <div class="total-container">
                     <strong>Preço Total:</strong> <span id="preco-total">R$ 0.00</span>
                 </div>
 
-                <button type="submit" class="btn-enviar">Confirmar e Enviar Pedido</button>
+                <button type="submit" class="btn-enviar">Confirmar Pedido</button>
             </form>
-
-            <!-- Recibo Dinâmico pós-validação -->
+            
             <div id="recibo-sucesso" class="recibo-container" style="display: none;"></div>
+            
+            <button id="btn-baixar-json" class="btn-enviar" style="background-color: #007bff; margin-top: 15px;">
+                Baixar Relatório de Pedidos (JSON)
+            </button>
         </div>
     </section>
 
-    <!-- SEÇÃO 4: RODAPÉ -->
     <footer class="rodape">
-        <p>&copy; 2026 Garopaba Burger - IFSC Campus Garopaba. Trabalho Prático de Programação para Internet.</p>
+        <p>&copy; 2026 Garopaba Burger - IFSC Campus Garopaba.</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
